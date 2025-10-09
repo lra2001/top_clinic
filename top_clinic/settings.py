@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'top_clinic_app',
     'bootstrap5',
+    'users.apps.UsersConfig',
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +125,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+LOGIN_REDIRECT_URL = 'top_clinic-home'
+
+LOGIN_URL = 'login'
+
+MEDIA_ROOT = BASE_DIR / 'media' # Newer modern and Pythonic way
+MEDIA_URL = '/media/'
