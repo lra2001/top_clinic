@@ -38,6 +38,11 @@ A web platform where patients can register, schedule appointments with doctors, 
   npm -v
   ```
 
+  - Install Bootstrap 5
+  ```bash
+  pip install django-bootstrap-v5
+  ```
+
 - Install Bootstrap Icons
   ```bash
   npm i bootstrap-icons

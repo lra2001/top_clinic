@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'top_clinic_app',
+    'bootstrap5',
 ]
 
 MIDDLEWARE = [

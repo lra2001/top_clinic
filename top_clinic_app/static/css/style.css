@@ -1,0 +1,13 @@
+main {
+    padding-top: 10px;
+    padding-bottom: 40px;
+}
+
+.doctor-image-container {
+    max-width: 400px;
+}
+.doctor-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
