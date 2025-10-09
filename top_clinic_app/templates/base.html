@@ -17,27 +17,25 @@
     <header class="site-header">
         <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'home' %}"><i class="bi bi-heart-pulse"
-                        class="d-inline-block align-items-center"></i> Top Clinic</a>
+                <a class="navbar-brand" href="{% url 'home' %}"><i class="bi bi-heart-pulse d-inline-block align-items-center"></i> Top Clinic</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarToggle">
-                    <div class="navbar-nav mr-auto">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="navbar-nav">
                         <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
                         <a class="nav-item nav-link" href="{% url 'specialties' %}">Specialties</a>
                         <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
                         <a class="nav-item nav-link" href="{% url 'home' %}">Contact</a>
                     </div>
                     <!-- Navbar Right Side -->
-                    <div class="navbar-nav">
+                    <div class="navbar-nav ms-auto">
                         {% if user.is_authenticated %}
                         <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
                         <form method="post" action="{% url 'logout' %}" class="nav-item nav-link">
                             {% csrf_token %}
-                            <button type="submit" class="nav-item nav-link btn btn-link"
-                                style="padding: 0; border: none; background: none; color: inherit; cursor: pointer;">
+                            <button type="submit" class="nav-item nav-link btn btn-link logout-btn"                                >
                                 Logout
                             </button>
                         </form>
@@ -50,7 +48,7 @@
             </div>
         </nav>
     </header>
-    <main class="container-fluid">
+    <main class="container-fluid pt-5 pb-5">
         {% block content %}{% endblock %}
     </main>
 

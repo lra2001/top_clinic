@@ -128,7 +128,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
-LOGIN_REDIRECT_URL = 'top_clinic-home'
+LOGIN_REDIRECT_URL = 'home'
 
 LOGIN_URL = 'login'
 
