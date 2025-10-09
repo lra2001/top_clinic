@@ -32,16 +32,25 @@
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav ms-auto">
                         {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="navbar-text text-light me-2">
                             Hi {{ user.username }}!
                         </span>
-                        <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
-                        <form method="post" action="{% url 'logout' %}" class="nav-item nav-link">
-                            {% csrf_token %}
-                            <button type="submit" class="nav-item nav-link btn btn-link logout-btn"                                >
-                                Logout
-                            </button>
-                        </form>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form method="post" action="{% url 'logout' %}" class="dropdown-item">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-link logout-btn">
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
                         {% else %}
                         <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
                         <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
