@@ -32,6 +32,9 @@
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav ms-auto">
                         {% if user.is_authenticated %}
+                        <span class="navbar-text text-light me-2">
+                            Hi {{ user.username }}!
+                        </span>
                         <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
                         <form method="post" action="{% url 'logout' %}" class="nav-item nav-link">
                             {% csrf_token %}
