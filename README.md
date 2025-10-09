@@ -49,15 +49,11 @@ A web platform where patients can register, schedule appointments with doctors, 
   django-admin startproject top_clinic /Workspace/top_clinic
   ```
   <!-- This command creates the required folder/files for the project-->
-  - Run local development server:
-  ```bash
-  python manage.py runserver
-  ```
 
 ### 3. Start App
   - Create App:
   ```bash
-  python manage.py startapp top_clinic
+  python manage.py startapp top_clinic_app
   ```
   <!-- This command creates the required folder/files for the app -->
 
@@ -91,6 +87,11 @@ A web platform where patients can register, schedule appointments with doctors, 
 - Create superuser
   ```bash
   python manage.py createsuperuser
+  ```
+
+ - Run local development server:
+  ```bash
+  python manage.py runserver
   ```
 
 ## Documentation
