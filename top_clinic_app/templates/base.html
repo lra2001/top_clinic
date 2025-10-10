@@ -15,7 +15,7 @@
 
 <body>
     <header class="site-header">
-        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+        <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{% url 'home' %}"><i class="bi bi-heart-pulse d-inline-block align-items-center"></i> Top Clinic</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -60,10 +60,12 @@
             </div>
         </nav>
     </header>
-    <main class="container-fluid pt-5 pb-5">
+    <br>
+    <main class="container-fluid pb-5">
         {% block content %}{% endblock %}
     </main>
-
+<br>
+<br>
     <div class="fixed-bottom">
         <footer class="bg-primary text-light text-center py-3">
             <p>&copy; 2025 Top Clinic. All rights reserved.</p>
