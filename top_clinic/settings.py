@@ -136,6 +136,8 @@ LOGIN_URL = 'login'
 MEDIA_ROOT = BASE_DIR / 'media' # Newer modern and Pythonic way
 MEDIA_URL = '/media/'
 
+from dotenv import load_dotenv
+load_dotenv()
 import certifi
 import ssl
 
