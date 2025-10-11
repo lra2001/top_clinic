@@ -1,22 +1,107 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<h1>Comprehensive Care Across Multiple Specialties</h1>
-<div class="fs-5">
-    Top Clinic brings together a diverse team of medical professionals covering a wide range of specialties to meet all
-    your healthcare needs under one roof.
-    Our key areas of expertise include:
-    <ul>
-        <li>General Medicine - Primary care and preventive health services.</li>
-        <li>Pediatrics - Compassionate care for infants, children, and adolescents.</li>
-        <li>Cardiology - Diagnosis and treatment of heart and circulatory conditions.</li>
-        <li>Dermatology - Expert solutions for skin, hair, and nail health.</li>
-        <li>Orthopedics - Care for bones, joints, and musculoskeletal issues.</li>
-        <li>Gynecology & Obstetrics - Women's health, pregnancy, and reproductive care.</li>
-        <li>Neurology - Specialized evaluation and management of brain and nerve disorders.</li>
-        <li>Psychiatry & Mental Health - Confidential and supportive mental wellness services.</li>
-    </ul>
-    At Top Clinic, we focus on integrated care, where specialists collaborate to ensure the best possible outcomes for
-    our patients.
+
+<div class="container my-5">
+  <div class="text-center mb-5">
+    <h1 class="fw-bold">Comprehensive Care Across Multiple Specialties</h1>
+    <p class="fs-5 text-muted">
+      Top Clinic brings together a diverse team of medical professionals covering a wide range of specialties
+      to meet all your healthcare needs under one roof.
+    </p>
+  </div>
+
+  <!-- Specialties Grid -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+    <!-- Example Card -->
+    <div class="col">
+      <div class="card h-100 border-0 shadow-sm">
+        <img src="{% static 'images/specialties/general_medicine.jpg' %}" class="card-img-top" alt="General Medicine">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">General Medicine</h5>
+          <p class="card-text text-muted">Primary care and preventive health services.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100 border-0 shadow-sm">
+        <img src="{% static 'images/specialties/pediatrics.jpg' %}" class="card-img-top" alt="Pediatrics">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">Pediatrics</h5>
+          <p class="card-text text-muted">Compassionate care for infants, children, and adolescents.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100 border-0 shadow-sm">
+        <img src="{% static 'images/specialties/cardiology.jpg' %}" class="card-img-top" alt="Cardiology">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">Cardiology</h5>
+          <p class="card-text text-muted">Diagnosis and treatment of heart and circulatory conditions.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100 border-0 shadow-sm">
+        <img src="{% static 'images/specialties/dermatology.jpg' %}" class="card-img-top" alt="Dermatology">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">Dermatology</h5>
+          <p class="card-text text-muted">Expert solutions for skin, hair, and nail health.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100 border-0 shadow-sm">
+        <img src="{% static 'images/specialties/orthopedics.jpg' %}" class="card-img-top" alt="Orthopedics">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">Orthopedics</h5>
+          <p class="card-text text-muted">Care for bones, joints, and musculoskeletal issues.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100 border-0 shadow-sm">
+        <img src="{% static 'images/specialties/gynecology.jpg' %}" class="card-img-top" alt="Gynecology & Obstetrics">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">Gynecology & Obstetrics</h5>
+          <p class="card-text text-muted">Women's health, pregnancy, and reproductive care.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100 border-0 shadow-sm">
+        <img src="{% static 'images/specialties/neurology.jpg' %}" class="card-img-top" alt="Neurology">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">Neurology</h5>
+          <p class="card-text text-muted">Specialized evaluation and management of brain and nerve disorders.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100 border-0 shadow-sm">
+        <img src="{% static 'images/specialties/psychiatry.jpg' %}" class="card-img-top" alt="Psychiatry & Mental Health">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">Psychiatry & Mental Health</h5>
+          <p class="card-text text-muted">Confidential and supportive mental wellness services.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-5">
+    <p class="fs-5">
+      At Top Clinic, we focus on <strong>integrated care</strong>, where specialists collaborate
+      to ensure the best possible outcomes for our patients.
+    </p>
+  </div>
 </div>
+
 {% endblock %}

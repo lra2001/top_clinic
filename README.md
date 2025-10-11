@@ -114,5 +114,6 @@ A web platform where patients can register, schedule appointments with doctors, 
 - [Image Resizer](https://imageresizer.com/)
 - [Create Logo](https://www.canva.com/)
 - [Convert to favicon](https://favicon.io/favicon-converter/)
+- [Pexels](https://www.pexels.com/)
 - [DeepAI - AI Image Generator](https://deepai.org/)
 - [ChatGPT - AI Image Generator](https://chatgpt.com/)
