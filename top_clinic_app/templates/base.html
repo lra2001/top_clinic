@@ -17,7 +17,8 @@
     <header class="site-header">
         <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'home' %}"><i class="bi bi-heart-pulse d-inline-block align-items-center"></i> Top Clinic</a>
+                <a class="navbar-brand" href="{% url 'home' %}"><i
+                        class="bi bi-heart-pulse d-inline-block align-items-center"></i> Top Clinic</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -26,35 +27,35 @@
                     <div class="navbar-nav">
                         <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
                         <a class="nav-item nav-link" href="{% url 'specialties' %}">Specialties</a>
-                        <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
-                        <a class="nav-item nav-link" href="{% url 'home' %}">Contact</a>
+                        <a class="nav-item nav-link" href="{% url 'contact' %}">Contact</a>
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav ms-auto">
                         {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="navbar-text text-light me-2">
-                            Hi {{ user.username }}!
-                        </span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <form method="post" action="{% url 'logout' %}" class="dropdown-item">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-link logout-btn">
-                                        Logout
-                                    </button>
-                                </form>
-                            </li>
-                        {% else %}
-                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
-                        {% endif %}
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <span class="navbar-text text-light me-2">
+                                    Hi {{ user.username }}!
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}" class="dropdown-item">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-link logout-btn">
+                                            Logout
+                                        </button>
+                                    </form>
+                                </li>
+                                {% else %}
+                                <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                                <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                                {% endif %}
                     </div>
                 </div>
             </div>
@@ -64,8 +65,8 @@
     <main class="container-fluid pb-5">
         {% block content %}{% endblock %}
     </main>
-<br>
-<br>
+    <br>
+    <br>
     <div class="fixed-bottom">
         <footer class="bg-primary text-light text-center py-3">
             <p>&copy; 2025 Top Clinic. All rights reserved.</p>
