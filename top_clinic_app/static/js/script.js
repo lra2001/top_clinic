@@ -1,33 +1,65 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const dateInput = document.querySelector('#id_date');
-    const specialtySelect = document.querySelector('#id_specialty');
-    const timeSelect = document.querySelector('#id_time');
+    const dateInput = document.getElementById('id_date');
+    const specialtyInput = document.getElementById('id_specialty');
+    const slotsDiv = document.getElementById('available-slots');
+    const timeField = document.getElementById('id_time');
 
-    function fetchAvailableSlots() {
+    if (!dateInput || !specialtyInput || !slotsDiv) return;
+
+    // Set today's date as min
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
+
+    async function loadSlots() {
         const date = dateInput.value;
-        const specialty = specialtySelect.value;
+        const specialty = specialtyInput.value;
         if (!date || !specialty) return;
 
-        fetch(`/ajax/get-available-slots/?date=${date}&specialty=${specialty}`)
-            .then(response => response.json())
-            .then(data => {
-                timeSelect.innerHTML = '';
-                data.slots.forEach(slot => {
-                    const option = document.createElement('option');
-                    option.value = slot.time;
-                    option.textContent = slot.time;
-                    if (!slot.available) {
-                        option.disabled = true;
-                        option.textContent += " (Booked)";
-                    }
-                    timeSelect.appendChild(option);
-                });
+        try {
+            const response = await fetch(`/ajax/get-available-slots/?date=${date}&specialty=${specialty}`);
+            const data = await response.json();
+
+            // Clear previous content
+            slotsDiv.innerHTML = '';
+
+            if (data.error) {
+                slotsDiv.innerHTML = `<p class="text-danger">${data.error}</p>`;
+                return;
+            }
+
+            if (data.slots.length === 0) {
+                slotsDiv.innerHTML = `<p class="text-muted">No available slots for this date.</p>`;
+                return;
+            }
+
+            // Add buttons for each slot
+            data.slots.forEach(slot => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.textContent = slot.time;
+                button.className = `btn btn-sm m-1 ${slot.available ? 'btn-outline-success' : 'btn-secondary'}`;
+                button.disabled = !slot.available;
+
+                if (slot.available) {
+                    button.addEventListener('click', () => {
+                        // Set hidden time field
+                        timeField.value = slot.time;
+
+                        // Remove highlight from other buttons
+                        slotsDiv.querySelectorAll('button').forEach(b => b.classList.remove('btn-success'));
+                        button.classList.remove('btn-outline-success');
+                        button.classList.add('btn-success');
+                    });
+                }
+
+                slotsDiv.appendChild(button);
             });
+        } catch (err) {
+            slotsDiv.innerHTML = `<p class="text-danger">Error loading slots.</p>`;
+            console.error(err);
+        }
     }
 
-    dateInput.addEventListener('change', fetchAvailableSlots);
-    specialtySelect.addEventListener('change', fetchAvailableSlots);
-
-    // Initialize on page load
-    fetchAvailableSlots();
+    dateInput.addEventListener('change', loadSlots);
+    specialtyInput.addEventListener('change', loadSlots);
 });

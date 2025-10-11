@@ -2,64 +2,38 @@
 {% load static %}
 
 {% block content %}
-<p class="fs-1">Book an Appointment</p>
-<form method="POST" id="appointmentForm" class="w-25">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label for="id_specialty" class="form-label"><strong>Specialty</strong></label>
-        {{ form.specialty }}
-    </div>
+<div class="w-25">
+    <h1 class="fs-1 mb-4">Book an Appointment</h1>
+    <form method="POST" id="appointmentForm">
+        {% csrf_token %}
 
-    <div class="mb-3">
-        <label for="id_date" class="form-label"><strong>Date</strong></label>
-        {{ form.date }}
-    </div>
+        <!-- Specialty -->
+        <div class="mb-3">
+            <label for="id_specialty" class="form-label"><strong>Specialty</strong></label>
+            {{ form.specialty }}
+        </div>
 
-    <div id="slots" class="mt-4">
-        <p>Select a date to see available times.</p>
-    </div>
+        <!-- Date -->
+        <div class="mb-3">
+            <label for="id_date" class="form-label"><strong>Date</strong></label>
+            {{ form.date }}
+        </div>
 
-    <input type="hidden" name="time" id="id_time">
-    <button type="submit" class="btn btn-primary mt-3">Book Appointment</button>
-</form>
+        <!-- Available slots -->
+        <div id="available-slots" class="mt-4">
+            <p id="slots-message" class="text-muted">Select a date to see available times.</p>
+        </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const dateInput = document.querySelector('#id_date');
-        const specialtyInput = document.querySelector('#id_specialty');
-        const slotsDiv = document.querySelector('#slots');
-        const timeField = document.querySelector('#id_time');
+        <!-- Hidden input for selected time -->
 
-        function loadSlots() {
-            const date = dateInput.value;
-            const specialty = specialtyInput.value;
-            if (!date || !specialty) return;
+        <div class="d-none">
+            {{ form.time }}
+        </div>
 
-            fetch(`/get-slots/?date=${date}&specialty=${specialty}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.error) {
-                        slotsDiv.innerHTML = `<p class="text-danger">${data.error}</p>`;
-                        return;
-                    }
+        <button type="submit" class="btn btn-primary mt-3">Book Appointment</button>
+    </form>
+</div>
 
-                    slotsDiv.innerHTML = data.slots.map(slot => `
-                    <button type="button"
-                        class="btn btn-sm m-1 ${slot.available ? 'btn-outline-success' : 'btn-secondary'}"
-                        ${slot.available ? '' : 'disabled'}
-                        onclick="selectSlot('${slot.time}')">${slot.time}</button>
-                `).join('');
-                });
-        }
+<script src="{% static 'js/script.js' %}"></script>
 
-        dateInput.addEventListener('change', loadSlots);
-        specialtyInput.addEventListener('change', loadSlots);
-
-        window.selectSlot = function (time) {
-            timeField.value = time;
-            document.querySelectorAll('#slots button').forEach(btn => btn.classList.remove('btn-success'));
-            event.target.classList.add('btn-success');
-        };
-    });
-</script>
 {% endblock %}

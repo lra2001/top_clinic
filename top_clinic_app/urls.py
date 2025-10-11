@@ -8,4 +8,5 @@ urlpatterns = [
     path('appointments/', views.appointments, name='appointments'),
     path('get-slots/', views.get_available_slots, name='get_slots'),
     path('ajax/get-available-slots/', views.get_available_slots, name='get_available_slots'),
+    path('my-appointments/', views.my_appointments, name='my_appointments'),
 ]

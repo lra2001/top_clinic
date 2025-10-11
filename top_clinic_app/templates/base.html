@@ -28,12 +28,14 @@
                         <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
                         <a class="nav-item nav-link" href="{% url 'specialties' %}">Specialties</a>
                         <a class="nav-item nav-link" href="{% url 'contact' %}">Contact</a>
+                        {% if user.is_authenticated %}
+                        <a class="nav-item nav-link" href="{% url 'my_appointments' %}">My Appointments</a>
+                        {% endif %}
                         {% if user.is_authenticated and not user.is_superuser %}
                         {% if user.profile.role == 'patient' %}
-                        <a class="btn btn-warning ms-2" href="{% url 'appointments' %}">Make an Appointment</a>
+                        <a class="btn btn-warning ms-2" href="{% url 'appointments' %}">New Appointment</a>
                         {% endif %}
                         {% endif %}
-
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav ms-auto">

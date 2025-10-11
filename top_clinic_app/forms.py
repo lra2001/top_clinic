@@ -9,7 +9,7 @@ class AppointmentForm(forms.ModelForm):
     date = forms.DateField(widget=forms.DateInput(attrs={
         'type': 'date',
         'class': 'form-control',
-        'min': '',  # we’ll populate with today’s date in the view
+        'min': '',
     }))
     time = forms.ChoiceField(choices=[], widget=forms.Select(attrs={
         'class': 'form-select'

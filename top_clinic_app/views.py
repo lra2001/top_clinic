@@ -89,3 +89,21 @@ def get_available_slots(request):
         current += interval
 
     return JsonResponse({'slots': slots})
+
+@login_required(login_url='login')
+def my_appointments(request):
+    if not hasattr(request.user, 'profile'):
+        messages.info(request, "No profile found.")
+        return redirect('home')
+
+    if request.user.profile.role == 'patient':
+        appointments = Appointment.objects.filter(patient=request.user).order_by('date', 'time')
+    elif request.user.profile.role == 'doctor':
+        appointments = Appointment.objects.filter(doctor=request.user).order_by('date', 'time')
+    else:
+        appointments = []
+
+    context = {
+        'appointments': appointments
+    }
+    return render(request, 'my_appointments.html', context)

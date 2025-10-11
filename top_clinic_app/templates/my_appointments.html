@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>My Appointments</h1>
+{% if appointments %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Specialty</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>With</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for appointment in appointments %}
+        <tr>
+            <td>{{ appointment.get_specialty_display }}</td>
+            <td>{{ appointment.date }}</td>
+            <td>{{ appointment.time }}</td>
+            <td>
+                {% if user.profile.role == 'patient' %}
+                    Dr. {{ appointment.doctor.username }}
+                {% elif user.profile.role == 'doctor' %}
+                    {{ appointment.patient.username }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No appointments scheduled.</p>
+{% endif %}
+{% endblock %}
