@@ -18,21 +18,33 @@ def contact(request):
 
 @login_required(login_url='login')
 def appointments(request):
-    if request.method == 'POST':
-        form = AppointmentForm(request.POST)
-        if form.is_valid():
-            specialty = form.cleaned_data['specialty']
-            date = form.cleaned_data['date']
-            time = form.cleaned_data['time']
-            # Check if slot is taken
-            if Appointment.objects.filter(date=date, time=time, specialty=specialty).exists():
-                messages.error(request, "This slot is already booked.")
-            else:
-                appointment = form.save(commit=False)
-                appointment.user = request.user
-                appointment.save()
-                messages.success(request, "Appointment booked successfully!")
-                return redirect('appointments')
+    if hasattr(request.user, 'profile'):
+        role = request.user.profile.role
     else:
-        form = AppointmentForm()
-    return render(request, 'appointments.html', {'form': form})
+        role = None
+
+    if role == 'doctor':
+        messages.info(request, "Doctors cannot book appointments.")
+        return redirect('home')
+    elif role == 'patient':
+        # Patient booking logic
+        if request.method == 'POST':
+            form = AppointmentForm(request.POST)
+            if form.is_valid():
+                specialty = form.cleaned_data['specialty']
+                date = form.cleaned_data['date']
+                time = form.cleaned_data['time']
+                if Appointment.objects.filter(date=date, time=time, specialty=specialty).exists():
+                    messages.error(request, "This slot is already booked.")
+                else:
+                    appointment = form.save(commit=False)
+                    appointment.user = request.user
+                    appointment.save()
+                    messages.success(request, "Appointment booked successfully!")
+                    return redirect('appointments')
+        else:
+            form = AppointmentForm()
+        return render(request, 'appointments.html', {'form': form})
+    else:
+        messages.info(request, "Only patients can book appointments.")
+        return redirect('home')
