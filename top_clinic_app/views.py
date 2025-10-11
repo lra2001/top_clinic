@@ -1,11 +1,11 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Appointment
+from .models import Appointment, SPECIALTY_CHOICES
 from .forms import AppointmentForm
 from django.http import JsonResponse
-from datetime import datetime, time, timedelta
+from datetime import datetime, time, timedelta as dt_time
+from users.models import Profile
 
 
 # Create your views here.
@@ -21,36 +21,38 @@ def contact(request):
 
 @login_required(login_url='login')
 def appointments(request):
-    if hasattr(request.user, 'profile'):
-        role = request.user.profile.role
-    else:
-        role = None
-
-    if role == 'doctor':
-        messages.info(request, "Doctors cannot book appointments.")
-        return redirect('home')
-    elif role == 'patient':
-        # Patient booking logic
-        if request.method == 'POST':
-            form = AppointmentForm(request.POST)
-            if form.is_valid():
-                specialty = form.cleaned_data['specialty']
-                date = form.cleaned_data['date']
-                time = form.cleaned_data['time']
-                if Appointment.objects.filter(date=date, time=time, specialty=specialty).exists():
-                    messages.error(request, "This slot is already booked.")
-                else:
-                    appointment = form.save(commit=False)
-                    appointment.user = request.user
-                    appointment.save()
-                    messages.success(request, "Appointment booked successfully!")
-                    return redirect('appointments')
-        else:
-            form = AppointmentForm()
-        return render(request, 'appointments.html', {'form': form})
-    else:
+    if not hasattr(request.user, 'profile') or request.user.profile.role != 'patient':
         messages.info(request, "Only patients can book appointments.")
         return redirect('home')
+
+    form = AppointmentForm(request.POST or None)
+
+    # Set today as minimum date
+    today_str = datetime.today().strftime('%Y-%m-%d')
+    form.fields['date'].widget.attrs['min'] = today_str
+
+    if request.method == 'POST' and form.is_valid():
+        specialty = form.cleaned_data['specialty']
+        date = form.cleaned_data['date']
+        time_slot = form.cleaned_data['time']
+
+        # Choose a doctor for that specialty
+        doctor_profile = Profile.objects.filter(role='doctor', specialty=specialty).first()
+        if not doctor_profile:
+            messages.error(request, "No doctors available for this specialty.")
+            return redirect('appointments')
+
+        if Appointment.objects.filter(date=date, time=time_slot, doctor=doctor_profile.user).exists():
+            messages.error(request, "This slot is already booked.")
+        else:
+            appointment = form.save(commit=False)
+            appointment.patient = request.user
+            appointment.doctor = doctor_profile.user
+            appointment.save()
+            messages.success(request, "Appointment booked successfully!")
+            return redirect('appointments')
+
+    return render(request, 'appointments.html', {'form': form})
 
 def get_available_slots(request):
     date_str = request.GET.get('date')
