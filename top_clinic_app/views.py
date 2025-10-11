@@ -6,6 +6,7 @@ from .forms import AppointmentForm
 from django.http import JsonResponse
 from datetime import datetime, time, timedelta
 from users.models import Profile
+from django.views.decorators.http import require_GET
 
 
 # Create your views here.
@@ -54,6 +55,8 @@ def appointments(request):
 
     return render(request, 'appointments.html', {'form': form})
 
+@require_GET
+@login_required
 def get_available_slots(request):
     date_str = request.GET.get('date')
     specialty = request.GET.get('specialty')
@@ -66,20 +69,22 @@ def get_available_slots(request):
     end_time = time(17, 0)
     interval = timedelta(minutes=30)
 
+    # Get all doctors with this specialty
+    doctors = Profile.objects.filter(role='doctor', specialty=specialty)
+    if not doctors.exists():
+        return JsonResponse({'slots': []})
+
     slots = []
     current = datetime.combine(date, start_time)
     end = datetime.combine(date, end_time)
 
-    # Get already booked times
-    booked = set(
-        Appointment.objects.filter(date=date, specialty=specialty).values_list('time', flat=True)
-    )
-
     while current < end:
         slot_time = current.time()
+        # Check if any doctor already has an appointment at this time
+        booked = Appointment.objects.filter(date=date, specialty=specialty, time=slot_time).exists()
         slots.append({
             'time': slot_time.strftime('%H:%M'),
-            'available': slot_time not in booked
+            'available': not booked
         })
         current += interval
 

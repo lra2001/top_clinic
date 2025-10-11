@@ -2,16 +2,16 @@
 {% load static %}
 
 {% block content %}
-<h1>Book an Appointment</h1>
-<form method="POST" id="appointmentForm">
+<p class="fs-1">Book an Appointment</p>
+<form method="POST" id="appointmentForm" class="w-25">
     {% csrf_token %}
     <div class="mb-3">
-        <label for="id_specialty" class="form-label">Specialty</label>
+        <label for="id_specialty" class="form-label"><strong>Specialty</strong></label>
         {{ form.specialty }}
     </div>
 
     <div class="mb-3">
-        <label for="id_date" class="form-label">Date</label>
+        <label for="id_date" class="form-label"><strong>Date</strong></label>
         {{ form.date }}
     </div>
 
