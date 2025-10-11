@@ -1,12 +1,65 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load static %}
+
 {% block content %}
-<div class="container mt-5 w-25">
-    <p class="fs-1">Book an Appointment</p>
-    <form method="post">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button type="submit" class="btn btn-primary mt-2">Book</button>
-    </form>
-</div>
+<h1>Book an Appointment</h1>
+<form method="POST" id="appointmentForm">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="id_specialty" class="form-label">Specialty</label>
+        {{ form.specialty }}
+    </div>
+
+    <div class="mb-3">
+        <label for="id_date" class="form-label">Date</label>
+        {{ form.date }}
+    </div>
+
+    <div id="slots" class="mt-4">
+        <p>Select a date to see available times.</p>
+    </div>
+
+    <input type="hidden" name="time" id="id_time">
+    <button type="submit" class="btn btn-primary mt-3">Book Appointment</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dateInput = document.querySelector('#id_date');
+        const specialtyInput = document.querySelector('#id_specialty');
+        const slotsDiv = document.querySelector('#slots');
+        const timeField = document.querySelector('#id_time');
+
+        function loadSlots() {
+            const date = dateInput.value;
+            const specialty = specialtyInput.value;
+            if (!date || !specialty) return;
+
+            fetch(`/get-slots/?date=${date}&specialty=${specialty}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        slotsDiv.innerHTML = `<p class="text-danger">${data.error}</p>`;
+                        return;
+                    }
+
+                    slotsDiv.innerHTML = data.slots.map(slot => `
+                    <button type="button"
+                        class="btn btn-sm m-1 ${slot.available ? 'btn-outline-success' : 'btn-secondary'}"
+                        ${slot.available ? '' : 'disabled'}
+                        onclick="selectSlot('${slot.time}')">${slot.time}</button>
+                `).join('');
+                });
+        }
+
+        dateInput.addEventListener('change', loadSlots);
+        specialtyInput.addEventListener('change', loadSlots);
+
+        window.selectSlot = function (time) {
+            timeField.value = time;
+            document.querySelectorAll('#slots button').forEach(btn => btn.classList.remove('btn-success'));
+            event.target.classList.add('btn-success');
+        };
+    });
+</script>
 {% endblock %}

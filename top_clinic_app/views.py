@@ -2,8 +2,11 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from top_clinic_app.models import Appointment
-from top_clinic_app.forms import AppointmentForm
+from .models import Appointment
+from .forms import AppointmentForm
+from django.http import JsonResponse
+from datetime import datetime, time, timedelta
+
 
 # Create your views here.
 
@@ -48,3 +51,34 @@ def appointments(request):
     else:
         messages.info(request, "Only patients can book appointments.")
         return redirect('home')
+
+def get_available_slots(request):
+    date_str = request.GET.get('date')
+    specialty = request.GET.get('specialty')
+
+    if not date_str or not specialty:
+        return JsonResponse({'error': 'Invalid parameters'}, status=400)
+
+    date = datetime.strptime(date_str, '%Y-%m-%d').date()
+    start_time = time(9, 0)
+    end_time = time(17, 0)
+    interval = timedelta(minutes=30)
+
+    slots = []
+    current = datetime.combine(date, start_time)
+    end = datetime.combine(date, end_time)
+
+    # Get already booked times
+    booked = set(
+        Appointment.objects.filter(date=date, specialty=specialty).values_list('time', flat=True)
+    )
+
+    while current < end:
+        slot_time = current.time()
+        slots.append({
+            'time': slot_time.strftime('%H:%M'),
+            'available': slot_time not in booked
+        })
+        current += interval
+
+    return JsonResponse({'slots': slots})
