@@ -4,7 +4,7 @@ from django.contrib import messages
 from .models import Appointment, SPECIALTY_CHOICES
 from .forms import AppointmentForm
 from django.http import JsonResponse
-from datetime import datetime, time, timedelta as dt_time
+from datetime import datetime, time, timedelta
 from users.models import Profile
 
 
