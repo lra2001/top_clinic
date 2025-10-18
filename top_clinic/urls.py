@@ -51,11 +51,3 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-# Temp solution to run migrations via URL
-
-from top_clinic_app.views import run_migrations_once
-
-urlpatterns += [
-    path('run-migrations-once/', run_migrations_once),
-]

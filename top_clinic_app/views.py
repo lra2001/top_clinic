@@ -107,14 +107,3 @@ def my_appointments(request):
         'appointments': appointments
     }
     return render(request, 'my_appointments.html', context)
-
-# Temp solution to run migrations from a view
-from django.http import HttpResponse
-from django.core.management import call_command
-
-def run_migrations_once(request):
-    try:
-        call_command('migrate', interactive=False)
-        return HttpResponse("Migrations ran successfully! All tables should now exist.")
-    except Exception as e:
-        return HttpResponse(f"Migration error: {str(e)}", status=500)
