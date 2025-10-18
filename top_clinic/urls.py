@@ -54,8 +54,8 @@ if settings.DEBUG:
 
 # Temp solution to run migrations via URL
 
-from top_clinic_app.views import run_migrations
+from top_clinic_app.views import run_migrations_once
 
 urlpatterns += [
-    path('run-migrations/', run_migrations),
+    path('run-migrations-once/', run_migrations_once),
 ]

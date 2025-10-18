@@ -111,13 +111,10 @@ def my_appointments(request):
 # Temp solution to run migrations from a view
 from django.http import HttpResponse
 from django.core.management import call_command
-from django.contrib.auth.decorators import user_passes_test
 
-# Only allow superusers to run this view
-@user_passes_test(lambda u: u.is_superuser)
-def run_migrations(request):
+def run_migrations_once(request):
     try:
         call_command('migrate', interactive=False)
-        return HttpResponse("✅ Migrations ran successfully!")
+        return HttpResponse("Migrations ran successfully! All tables should now exist.")
     except Exception as e:
-        return HttpResponse(f"❌ Migration error: {str(e)}", status=500)
+        return HttpResponse(f"Migration error: {str(e)}", status=500)
