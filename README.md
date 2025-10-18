@@ -117,3 +117,6 @@ A web platform where patients can register, schedule appointments with doctors, 
 - [Pexels](https://www.pexels.com/)
 - [DeepAI - AI Image Generator](https://deepai.org/)
 - [ChatGPT - AI Image Generator](https://chatgpt.com/)
+
+### Data generation
+- [Random Data Generator](https://www.mockaroo.com/)
