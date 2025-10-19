@@ -32,12 +32,43 @@ def appointments(request):
     today_str = datetime.today().strftime('%Y-%m-%d')
     form.fields['date'].widget.attrs['min'] = today_str
 
+    # Dynamic time choices
+    if request.method == "POST":
+        specialty = request.POST.get("specialty")
+        date_str = request.POST.get("date")
+
+        if specialty and date_str:
+            try:
+                date = datetime.strptime(date_str, "%Y-%m-%d").date()
+                start_time = time(9, 0)
+                end_time = time(17, 0)
+                interval = timedelta(minutes=30)
+
+                choices = []
+                current = datetime.combine(date, start_time)
+                end = datetime.combine(date, end_time)
+                while current < end:
+                    slot_time = current.time()
+                    booked = Appointment.objects.filter(
+                        date=date,
+                        specialty=specialty,
+                        time=slot_time
+                    ).exists()
+                    if not booked:
+                        formatted = slot_time.strftime("%H:%M")
+                        choices.append((formatted, formatted))
+                    current += interval
+
+                form.fields["time"].choices = choices
+            except ValueError:
+                pass
+
+    # Validate and save appointment
     if request.method == 'POST' and form.is_valid():
         specialty = form.cleaned_data['specialty']
         date = form.cleaned_data['date']
         time_slot = form.cleaned_data['time']
 
-        # Choose a doctor for that specialty
         doctor_profile = Profile.objects.filter(role='doctor', specialty=specialty).first()
         if not doctor_profile:
             messages.error(request, "No doctors available for this specialty.")
