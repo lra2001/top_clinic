@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Appointment, SPECIALTY_CHOICES
@@ -138,3 +138,16 @@ def my_appointments(request):
         'appointments': appointments
     }
     return render(request, 'my_appointments.html', context)
+
+@login_required(login_url='login')
+def delete_appointment(request, appointment_id):
+    appointment = get_object_or_404(Appointment, id=appointment_id)
+
+    # Only allow deletion if user is involved
+    if request.user == appointment.patient or request.user == appointment.doctor:
+        appointment.delete()
+        messages.success(request, "Appointment deleted successfully.")
+    else:
+        messages.error(request, "You don't have permission to delete this appointment.")
+
+    return redirect('my_appointments')

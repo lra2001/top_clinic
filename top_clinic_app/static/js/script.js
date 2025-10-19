@@ -41,23 +41,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 button.disabled = !slot.available;
 
                 if (slot.available) {
-                button.addEventListener('click', () => {
-                    // Set hidden time field
-                    timeField.value = slot.time;
+                    button.addEventListener('click', () => {
+                        // Set hidden time field
+                        timeField.value = slot.time;
 
-                    // Ensure the value exists in the select element
-                    let option = Array.from(timeField.options).find(opt => opt.value === slot.time);
-                    if (!option) {
-                        option = new Option(slot.time, slot.time, true, true);
-                        timeField.appendChild(option);
-                    }
+                        // Ensure the value exists in the select element
+                        let option = Array.from(timeField.options).find(opt => opt.value === slot.time);
+                        if (!option) {
+                            option = new Option(slot.time, slot.time, true, true);
+                            timeField.appendChild(option);
+                        }
 
-                    // Remove highlight from other buttons
-                    slotsDiv.querySelectorAll('button').forEach(b => b.classList.remove('btn-success'));
-                    button.classList.remove('btn-outline-success');
-                    button.classList.add('btn-success');
-                });
-            }
+                        // Remove highlight from other buttons
+                        slotsDiv.querySelectorAll('button').forEach(b => b.classList.remove('btn-success'));
+                        button.classList.remove('btn-outline-success');
+                        button.classList.add('btn-success');
+                    });
+                }
 
                 slotsDiv.appendChild(button);
             });

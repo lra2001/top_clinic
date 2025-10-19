@@ -9,6 +9,7 @@
             <th>Date</th>
             <th>Time</th>
             <th>With</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -19,10 +20,19 @@
             <td>{{ appointment.time }}</td>
             <td>
                 {% if user.profile.role == 'patient' %}
-                    Dr. {{ appointment.doctor.username }}
+                Dr. {{ appointment.doctor.username }}
                 {% elif user.profile.role == 'doctor' %}
-                    {{ appointment.patient.username }}
+                {{ appointment.patient.username }}
                 {% endif %}
+            </td>
+            <td>
+                <form method="POST" action="{% url 'delete_appointment' appointment.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger"
+                        onclick="return confirm('Are you sure you want to delete this appointment?');">
+                        Delete
+                    </button>
+                </form>
             </td>
         </tr>
         {% endfor %}
@@ -31,4 +41,5 @@
 {% else %}
 <p>No appointments scheduled.</p>
 {% endif %}
+
 {% endblock %}
