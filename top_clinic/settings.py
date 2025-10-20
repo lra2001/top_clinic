@@ -161,3 +161,4 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('USER_USER') # Login email address, Stored as an environment variable
 EMAIL_HOST_PASSWORD = os.environ.get('USER_PASS')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
