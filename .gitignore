@@ -33,5 +33,4 @@ venv.bak/
 *.vsix
 
 # Local Images
-# media/profile_pics/*
-# test
+media/profile_pics/*
