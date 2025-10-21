@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load django_bootstrap5 static cloudinary_tags %} <!-- Load bootstrap5, static and cloudinary tags -->
+{% load django_bootstrap5 static cloudinary %} <!-- Load bootstrap5, static and cloudinary tags -->
 
 <head>
     <meta charset="UTF-8">
@@ -44,7 +44,7 @@
                             <a class="nav-link dropdown-toggle d-flex align-items-center py-0" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="navbar-text text-light me-2">
-                                    <img src="{{ user.profile.image.url|cloudinary:'w_100,h_100,c_thumb' }}" alt="Profile picture"
+                                    <img src="{% if user.profile.image %}{% cloudinary_url user.profile.image 'w_100,h_100,c_thumb' %}{% else %}{{ MEDIA_URL }}default.jpg{% endif %}" alt="Profile picture"
                                         class="rounded-circle profile-image">
                                 </span>
                             </a>
