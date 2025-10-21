@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'crispy_forms',
     'crispy_bootstrap5',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -162,3 +164,11 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('USER_USER') # Login email address, Stored as an environment variable
 EMAIL_HOST_PASSWORD = os.environ.get('USER_PASS')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+}
