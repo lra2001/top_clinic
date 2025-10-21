@@ -44,7 +44,7 @@
                             <a class="nav-link dropdown-toggle d-flex align-items-center py-0" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="navbar-text text-light me-2">
-                                    <img src="{{ user.profile.image.url }}" alt="Profile picture"
+                                    <img src="{{ user.profile.image.url|cloudinary:'w_100,h_100,c_thumb' }}" alt="Profile picture"
                                         class="rounded-circle profile-image">
                                 </span>
                             </a>
