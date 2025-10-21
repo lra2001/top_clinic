@@ -31,3 +31,6 @@ venv.bak/
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# Local Images
+media/profile_pics/*
