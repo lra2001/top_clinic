@@ -38,16 +38,17 @@
                         {% endif %}
                     </div>
                     <!-- Navbar Right Side -->
-                    <div class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto align-items-center">
                         {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center py-0" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="navbar-text text-light me-2">
-                                    Hi {{ user.username }}!
+                                    <img src="{{ user.profile.image.url }}" alt="Profile picture"
+                                        class="rounded-circle profile-image">
                                 </span>
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -64,7 +65,7 @@
                                 <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
                                 <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
                                 {% endif %}
-                    </div>
+                            </ul>
                 </div>
             </div>
         </nav>

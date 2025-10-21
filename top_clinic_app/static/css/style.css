@@ -20,3 +20,8 @@
 .logout-btn:focus {
     text-decoration: none !important;
 }
+
+.profile-image {
+    width: 30px;
+    height: 30px;
+}
