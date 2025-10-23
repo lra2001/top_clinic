@@ -15,10 +15,12 @@ class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs['placeholder'] = 'Enter first name'
+        self.fields['last_name'].widget.attrs['placeholder'] = 'Enter last name'
         self.fields['username'].widget.attrs['placeholder'] = 'Enter username'
         self.fields['email'].widget.attrs['placeholder'] = 'Enter email'
         self.fields['password1'].widget.attrs['placeholder'] = 'Enter password'
@@ -30,7 +32,7 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ['first_name','last_name', 'username', 'email']
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
