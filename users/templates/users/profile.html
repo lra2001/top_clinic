@@ -1,19 +1,21 @@
 {% extends "base.html" %}
 {% load static crispy_forms_tags cloudinary %}
+
 {% block content %}
 <div class="content-section w-25">
     <div class="media">
         {% if user.profile.image %}
-        {% cloudinary_url user.profile.image.name crop="thumb" as profile_img_url %}
-        <img src="{{ profile_img_url }}" alt="Profile picture" class="rounded-circle account-img">
+            {% cloudinary_url user.profile.image crop="thumb" as profile_img_url %}
+            <img src="{{ profile_img_url }}" alt="Profile picture" class="rounded-circle account-img">
         {% else %}
-        <img src="{% static 'images/default.jpg' %}" alt="Profile picture" class="rounded-circle account-img">
+            <img src="{% static 'images/default.jpg' %}" alt="Profile picture" class="rounded-circle account-img">
         {% endif %}
         <div class="media-body">
             <p class="fs-2 account-heading">{{ user.username }}</p>
             <p class="text-secondary">{{ user.email }}</p>
         </div>
     </div>
+
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <fieldset class="form-group">

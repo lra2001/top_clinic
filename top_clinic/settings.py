@@ -16,11 +16,11 @@ import dj_database_url
 from dotenv import load_dotenv
 import certifi
 import ssl
-from django.conf import settings
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Load environment variables
 load_dotenv()
 
+# Paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -146,16 +146,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 LOGIN_REDIRECT_URL = 'home'
-
 LOGIN_URL = 'login'
-
-MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
 
 ssl._create_default_https_context = ssl.create_default_context(cafile=certifi.where())
 
@@ -168,22 +166,20 @@ EMAIL_HOST_PASSWORD = os.environ.get('USER_PASS')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 
-CLOUDINARY_URL = os.getenv('CLOUDINARY_URL')
+# CLOUDINARY_URL = os.getenv('CLOUDINARY_URL')
 
-if not CLOUDINARY_URL:
-    print("Warning: CLOUDINARY_URL not found in environment!")
+# if not CLOUDINARY_URL:
+#     print("Warning: CLOUDINARY_URL not found in environment!")
 
-cloudinary.config(cloudinary_url=CLOUDINARY_URL)
+# cloudinary.config(cloudinary_url=CLOUDINARY_URL)
 
-# cloudinary.config(
-#   cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
-#   api_key = os.getenv('CLOUDINARY_API_KEY'),
-#   api_secret = os.getenv('CLOUDINARY_API_SECRET'),
-#   secure = True
-# )
+cloudinary.config(
+  cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
+  api_key = os.getenv('CLOUDINARY_API_KEY'),
+  api_secret = os.getenv('CLOUDINARY_API_SECRET'),
+  secure = True
+)
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
@@ -191,4 +187,4 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
 }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
