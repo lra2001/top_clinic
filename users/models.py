@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
-from io import BytesIO
 from django.core.files.base import ContentFile
-from PIL import Image
 
 class Profile(models.Model):
     ROLE_CHOICES = [
@@ -27,19 +25,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.user.username} Profile'
-
-        if self.image:
-            try:
-                img = Image.open(self.image.file)
-                if img.height > 300 or img.width > 300:
-                    output_size = (300, 300)
-                    img.thumbnail(output_size)
-
-                    # Save the resized image back to the storage
-                    buffer = BytesIO()
-                    img.save(buffer, format=img.format)
-                    buffer.seek(0)
-                    self.image.save(self.image.name, ContentFile(buffer.read()), save=False)
-            except Exception as e:
-                # Log or handle the exception if needed
-                print(f"Error resizing image: {e}")
