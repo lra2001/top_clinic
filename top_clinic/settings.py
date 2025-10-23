@@ -167,10 +167,26 @@ EMAIL_HOST_USER = os.environ.get('USER_USER') # Login email address, Stored as a
 EMAIL_HOST_PASSWORD = os.environ.get('USER_PASS')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+CLOUDINARY_URL = os.getenv('CLOUDINARY_URL')
+
+if not CLOUDINARY_URL:
+    print("Warning: CLOUDINARY_URL not found in environment!")
+
+cloudinary.config(
+  cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
+  api_key = os.getenv('CLOUDINARY_API_KEY'),
+  api_secret = os.getenv('CLOUDINARY_API_SECRET'),
+  secure = True
+)
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
     'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
 }
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

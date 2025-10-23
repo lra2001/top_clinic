@@ -1,9 +1,14 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
+{% load static crispy_forms_tags cloudinary %}
 {% block content %}
 <div class="content-section w-25">
     <div class="media">
-        <img class="rounded-circle account-img" src="{% if user.profile.image %}{% cloudinary_url user.profile.image 'w_100,h_100,c_thumb' %}{% else %}{{ MEDIA_URL }}default.jpg{% endif %}" alt="Profile picture>
+        {% if user.profile.image %}
+        {% cloudinary_url user.profile.image.name crop="thumb" as profile_img_url %}
+        <img src="{{ profile_img_url }}" alt="Profile picture" class="rounded-circle account-img">
+        {% else %}
+        <img src="{% static 'images/default.jpg' %}" alt="Profile picture" class="rounded-circle account-img">
+        {% endif %}
         <div class="media-body">
             <p class="fs-2 account-heading">{{ user.username }}</p>
             <p class="text-secondary">{{ user.email }}</p>
