@@ -28,16 +28,18 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+        if self.image:
+            try:
+                img = Image.open(self.image.file)
+                if img.height > 300 or img.width > 300:
+                    output_size = (300, 300)
+                    img.thumbnail(output_size)
 
-        # Resize image only if local file exists
-        if self.image and hasattr(self.image, 'path'):
-            img = Image.open(self.image.path)
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
-        else:
-        # For Cloudinary, skip resizing to avoid path errors
-            pass
+                    # Save the resized image back to the storage
+                    buffer = BytesIO()
+                    img.save(buffer, format=img.format)
+                    buffer.seek(0)
+                    self.image.save(self.image.name, ContentFile(buffer.read()), save=False)
+            except Exception as e:
+                # Log or handle the exception if needed
+                print(f"Error resizing image: {e}")
