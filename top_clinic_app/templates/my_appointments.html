@@ -20,9 +20,9 @@
             <td>{{ appointment.time }}</td>
             <td>
                 {% if user.profile.role == 'patient' %}
-                Dr. {{ appointment.doctor.username }}
+                Dr. {{ appointment.doctor.last_name }}
                 {% elif user.profile.role == 'doctor' %}
-                {{ appointment.patient.username }}
+                {{ appointment.patient.first_name }} {{ appointment.patient.last_name }}
                 {% endif %}
             </td>
             <td>
