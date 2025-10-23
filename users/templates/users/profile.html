@@ -5,7 +5,7 @@
 <div class="content-section w-25">
     <div class="media">
         {% if user.profile.image %}
-            {% cloudinary_url user.profile.image crop="thumb" as profile_img_url %}
+            {% cloudinary_url user.profile.image.name crop="thumb" as profile_img_url %}
             <img src="{{ profile_img_url }}" alt="Profile picture" class="rounded-circle account-img">
         {% else %}
             <img src="{% static 'images/default.jpg' %}" alt="Profile picture" class="rounded-circle account-img">
