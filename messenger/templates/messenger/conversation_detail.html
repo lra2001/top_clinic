@@ -33,6 +33,7 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-success">Send Message</button>
+        <a href="{% url 'inbox' %}" class="btn btn-secondary">Back to Inbox</a>
       </form>
     </div>
   </div>
