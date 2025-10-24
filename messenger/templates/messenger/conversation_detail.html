@@ -11,7 +11,13 @@
           {% for message in messages %}
             <div class="d-flex mb-2 {% if message.sender == user %}justify-content-end{% else %}justify-content-start{% endif %}">
               <div class="p-2 rounded {% if message.sender == user %}bg-primary text-white{% else %}bg-light text-dark{% endif %}" style="max-width: 75%;">
-                <small class="fw-bold">{{ message.sender.username }}</small><br>
+                <small class="fw-bold">
+                {% if message.sender.profile.role == 'doctor' %}
+                    Dr. {{ message.sender.last_name }}
+                {% else %}
+                    {{ message.sender.first_name }} {{ message.sender.last_name }}
+                {% endif %}
+                </small><br>
                 <span>{{ message.content }}</span>
                 <br>
                 <small class="text-muted fst-italic">{{ message.created_at|date:"d M Y H:i" }}</small>

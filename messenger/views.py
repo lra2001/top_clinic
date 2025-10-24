@@ -82,7 +82,7 @@ def start_conversation(request, appointment_id):
 def archive_conversation(request, conversation_id):
     conversation = get_object_or_404(Conversation, id=conversation_id)
 
-    # Optional: only participants can archive
+    #Only participants can archive
     participants = [conversation.appointment.patient, conversation.appointment.doctor]
     if request.user not in participants:
         messages.error(request, "You are not allowed to archive this conversation.")
