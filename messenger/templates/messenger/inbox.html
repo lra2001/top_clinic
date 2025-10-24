@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-4">
-  <p class="fs-2">Inbox</p>
-  <ul class="list-group w-50">
-    {% for conv in conversations %}
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <a href="{% url 'conversation_detail' conv.id %}">
+  <h2 class="fs-3">Inbox</h2>
+  <ul class="list-group mb-4">
+    {% for conv in active_conversations %}
+      <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+        <a class="flex-grow-1 me-2" href="{% url 'conversation_detail' conv.id %}">
           Conversation for {{ conv.appointment }}
         </a>
         <div class="d-flex align-items-center gap-2">
@@ -14,12 +14,29 @@
           {% endif %}
           <form method="POST" action="{% url 'archive_conversation' conv.id %}">
             {% csrf_token %}
-            <button type="submit" class="btn btn-sm btn-secondary">Archive</button>
+            <button class="btn btn-sm btn-danger">Archive</button>
           </form>
         </div>
       </li>
     {% empty %}
-      <p>No conversations yet.</p>
+      <p>No active conversations.</p>
+    {% endfor %}
+  </ul>
+
+  <h2 class="fs-3">Archived</h2>
+  <ul class="list-group">
+    {% for conv in archived_conversations %}
+      <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+        <a class="flex-grow-1 me-2" href="{% url 'conversation_detail' conv.id %}">
+          Conversation for {{ conv.appointment }}
+        </a>
+        <form method="POST" action="{% url 'unarchive_conversation' conv.id %}">
+          {% csrf_token %}
+          <button class="btn btn-sm btn-secondary">Unarchive</button>
+        </form>
+      </li>
+    {% empty %}
+      <p>No archived conversations.</p>
     {% endfor %}
   </ul>
 </div>

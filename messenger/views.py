@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from .models import Conversation, Message
+from .models import Conversation, Message, ConversationStatus
 from top_clinic_app.models import Appointment
 from .forms import MessageForm
 
@@ -9,25 +9,31 @@ from .forms import MessageForm
 
 @login_required
 def inbox(request):
-    if hasattr(request.user, 'profile') and request.user.profile.role == 'patient':
+    if request.user.profile.role == 'patient':
         appointments = Appointment.objects.filter(patient=request.user)
-    elif hasattr(request.user, 'profile') and request.user.profile.role == 'doctor':
+    elif request.user.profile.role == 'doctor':
         appointments = Appointment.objects.filter(doctor=request.user)
     else:
         appointments = Appointment.objects.none()
 
-    conversations = Conversation.objects.filter(appointment__in=appointments)
+    all_conversations = Conversation.objects.filter(appointment__in=appointments)
+    active_conversations = []
+    archived_conversations = []
 
-    # Add unread count to each conversation
-    for conv in conversations:
+    for conv in all_conversations:
         conv.unread_count = conv.messages.filter(is_read=False).exclude(sender=request.user).count()
+        status = conv.statuses.filter(user=request.user).first()
+        if status and status.is_archived:
+            archived_conversations.append(conv)
+        else:
+            active_conversations.append(conv)
 
-    # Total unread for navbar badge
-    total_unread = sum(conv.unread_count for conv in conversations)
+    total_unread = sum(conv.unread_count for conv in active_conversations)
 
     return render(request, 'messenger/inbox.html', {
-        'conversations': conversations,
-        'total_unread': total_unread
+        'active_conversations': active_conversations,
+        'archived_conversations': archived_conversations,
+        'total_unread': total_unread,
     })
 
 
@@ -81,14 +87,21 @@ def start_conversation(request, appointment_id):
 @login_required
 def archive_conversation(request, conversation_id):
     conversation = get_object_or_404(Conversation, id=conversation_id)
+    status, created = ConversationStatus.objects.get_or_create(
+        user=request.user, conversation=conversation
+    )
+    status.is_archived = True
+    status.save()
+    messages.success(request, 'Conversation archived.')
+    return redirect('inbox')
 
-    #Only participants can archive
-    participants = [conversation.appointment.patient, conversation.appointment.doctor]
-    if request.user not in participants:
-        messages.error(request, "You are not allowed to archive this conversation.")
-        return redirect('inbox')
-
-    conversation.is_archived = True
-    conversation.save()
-    messages.success(request, "Conversation archived successfully.")
+@login_required
+def unarchive_conversation(request, conversation_id):
+    conversation = get_object_or_404(Conversation, id=conversation_id)
+    status, created = ConversationStatus.objects.get_or_create(
+        user=request.user, conversation=conversation
+    )
+    status.is_archived = False
+    status.save()
+    messages.success(request, 'Conversation unarchived.')
     return redirect('inbox')

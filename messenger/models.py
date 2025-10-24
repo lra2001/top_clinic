@@ -27,3 +27,11 @@ class Message(models.Model):
 
     def __str__(self):
         return f"Message from {self.sender} to {self.recipient}"
+
+class ConversationStatus(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='conversation_status')
+    conversation = models.ForeignKey('Conversation', on_delete=models.CASCADE, related_name='statuses')
+    is_archived = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('user', 'conversation')

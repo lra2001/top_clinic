@@ -57,6 +57,7 @@ The **Top Clinic** platform is built using Django following the standard MVC (Mo
 ### Models (Database Layer)
 - **User & Profile**: Store account and personal details (role, specialty, profile image).
 - **Appointment**: Stores appointment data linked to patients and doctors.
+- **Messages**: Optional patient-doctor communication. This feature can be used on existing appointments.
 - **Database**: PostgreSQL managed via Django ORM with migrations.
 
 ### Views & Templates
