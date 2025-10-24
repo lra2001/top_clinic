@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <p class="fs-2">Inbox</p>
+  <ul class="list-group w-50">
+    {% for conv in conversations %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <a href="{% url 'conversation_detail' conv.id %}">
+          Conversation for {{ conv.appointment }}
+        </a>
+        <div class="d-flex align-items-center gap-2">
+          {% if conv.unread_count > 0 %}
+            <span class="badge bg-danger">{{ conv.unread_count }}</span>
+          {% endif %}
+          <form method="POST" action="{% url 'archive_conversation' conv.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-secondary">Archive</button>
+          </form>
+        </div>
+      </li>
+    {% empty %}
+      <p>No conversations yet.</p>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

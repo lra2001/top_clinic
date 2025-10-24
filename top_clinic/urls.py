@@ -47,6 +47,7 @@ urlpatterns = [
              template_name='users/password_reset_done.html'
          ),
          name='password_reset_done'),
+    path('messenger/', include('messenger.urls')),
 ]
 
 if settings.DEBUG:

@@ -29,3 +29,6 @@ class Appointment(models.Model):
 
     class Meta:
         unique_together = ('date', 'time', 'specialty', 'doctor')
+
+    def __str__(self):
+        return f"{self.get_specialty_display()} on {self.date} at {self.time}"

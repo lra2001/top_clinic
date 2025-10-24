@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'cloudinary',
     'cloudinary_storage',
+    'messenger.apps.MessengerConfig',
 ]
 
 MIDDLEWARE = [
@@ -77,6 +78,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
+                'messenger.context_processors.unread_message_count',
             ],
         },
     },
@@ -157,13 +159,21 @@ LOGIN_URL = 'login'
 
 ssl._create_default_https_context = ssl.create_default_context(cafile=certifi.where())
 
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = os.environ.get('USER_USER') # Login email address, Stored as an environment variable
+# EMAIL_HOST_PASSWORD = os.environ.get('USER_PASS')
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'in-v3.mailjet.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('USER_USER') # Login email address, Stored as an environment variable
-EMAIL_HOST_PASSWORD = os.environ.get('USER_PASS')
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_HOST_USER = os.environ.get('MAILJET_API_KEY')
+EMAIL_HOST_PASSWORD = os.environ.get('MAILJET_SECRET_KEY')
+DEFAULT_FROM_EMAIL = os.environ.get('USER_USER')
 
 import cloudinary
 
