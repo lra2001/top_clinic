@@ -40,7 +40,7 @@ def inbox(request):
 @login_required
 def conversation_detail(request, conversation_id):
     conversation = get_object_or_404(Conversation, id=conversation_id)
-    messages_qs = conversation.messages.all().order_by('created_at')
+    chat_messages = conversation.messages.all().order_by('created_at')
 
     if request.method == 'POST':
         form = MessageForm(request.POST)
@@ -49,7 +49,7 @@ def conversation_detail(request, conversation_id):
             msg.conversation = conversation
             msg.sender = request.user
 
-            # Determine recipient: the other participant in the appointment
+            # Determine recipient
             if request.user == conversation.appointment.patient:
                 msg.recipient = conversation.appointment.doctor
             else:
@@ -62,14 +62,14 @@ def conversation_detail(request, conversation_id):
         form = MessageForm()
 
     # Mark messages as read if they are from the other participant
-    for msg in messages_qs.filter(is_read=False).exclude(sender=request.user):
+    for msg in chat_messages.filter(is_read=False).exclude(sender=request.user):
         msg.is_read = True
         msg.save()
 
     return render(request, 'messenger/conversation_detail.html', {
         'conversation': conversation,
-        'messages': messages_qs,
-        'form': form
+        'chat_messages': chat_messages,
+        'form': form,
     })
 
 
