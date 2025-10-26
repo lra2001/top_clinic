@@ -82,25 +82,6 @@ The **Top Clinic** platform is built using Django following the standard MVC (Mo
 
 ---
 
-## Workflow Diagram
-
-```
-Frontend Users
-     |
-     v
-  Register/Login
-     |
-     v
-Patients ------------------> Doctors
-     |                          |
-Create/Cancel Appointments       v
-     |                   Manage Appointments
-     v                          |
- Update Profile -----------------
-```
-
----
-
 ## Tech Stack
 
 - **Backend**: Django 4.2, Django REST Framework
@@ -137,6 +118,38 @@ python manage.py createsuperuser
 ```bash
 python manage.py runserver
 ```
+
+---
+
+## Deployment Setup
+
+### Render
+1. Log in to [Render.com](https://render.com)
+2. Connect your GitHub repository
+3. Create Project
+4. Add a Postgres
+5. Add a Web Service with the required variables
+   - DATABASE_URL
+   - ALLOWED_HOSTS
+   - CLOUDINARY_API_KEY
+   - CLOUDINARY_API_SECRET
+   - CLOUDINARY_CLOUD_NAME
+   - CLOUDINARY_URL
+   - DEBUG
+   - RENDER
+   - SECRET_KEY
+   - USER_PASS
+   - USER_USER
+6. Set the build command
+```bash
+pip install -r requirements.txt
+```
+7. Set the Start Command
+```bash
+python manage.py migrate && gunicorn top_clinic.wsgi:application
+```
+8. Deploy and open the provided URL (https://top-clinic.onrender.com/).
+9. Test access by registering a new user (role=patient) or select a user from the list above
 
 ---
 
